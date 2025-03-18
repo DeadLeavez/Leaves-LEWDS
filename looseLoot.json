@@ -1,0 +1,39 @@
+{
+  "spawnpointCount": {
+    "mean": 17.154351048062672,
+    "std": 3.4159853288130417
+  },
+  "spawnpointsForced": [
+    {
+      "locationId": "(-19.473001, 0.518, -52.22601)",
+      "probability": 1,
+      "template": {
+        "Id": "item_barter_quest_blood_nf2024 [c16ab9d7-b663-4e2d-a09a-43aaac5eae1b]",
+        "IsContainer": false,
+        "useGravity": false,
+        "randomRotation": false,
+        "Position": {
+          "x": -19.473001,
+          "y": 0.518,
+          "z": -52.22601
+        },
+        "Rotation": {
+          "x": 358.7527,
+          "y": 1.0499725,
+          "z": 319.90405
+        },
+        "IsGroupPosition": false,
+        "GroupPositions": [],
+        "IsAlwaysSpawn": false,
+        "Root": "6730cad8cef9c500e612e965",
+        "Items": [
+          {
+            "_id": "6730cad8cef9c500e612e965",
+            "_tpl": "66a0f0926fee20fa70036da6",
+            "upd": {
+              "StackObjectsCount": 1
+            }
+          }
+        ]
+      }
+    },

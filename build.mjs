@@ -1,34 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * Build Script
- *
- * This script automates the build process for server-side SPT mod projects, facilitating the creation of distributable
- * mod packages. It performs a series of operations as outlined below:
- * - Loads the .buildignore file, which is used to list files that should be ignored during the build process.
- * - Loads the package.json to get project details so a descriptive name can be created for the mod package.
- * - Creates a distribution directory and a temporary working directory.
- * - Copies files to the temporary directory while respecting the .buildignore rules.
- * - Creates a zip archive of the project files.
- * - Moves the zip file to the root of the distribution directory.
- * - Cleans up the temporary directory.
- *
- * It's typical that this script be customized to suit the needs of each project. For example, the script can be updated
- * to perform additional operations, such as moving the mod package to a specific location or uploading it to a server.
- * This script is intended to be a starting point for developers to build upon.
- *
- * Usage:
- * - Run this script using npm: `npm run build`
- * - Use `npm run buildinfo` for detailed logging.
- *
- * Note:
- * - Ensure that all necessary Node.js modules are installed before running the script: `npm install`
- * - The script reads configurations from the `package.json` and `.buildignore` files; ensure they are correctly set up.
- *
- * @author Refringe
- * @version v1.0.0
- */
-
 import fs from "fs-extra";
 import os from "os";
 import path from "path";

@@ -1,6 +1,6 @@
 import { DependencyContainer } from "tsyringe";
 
-import { ILogger } from "@spt/models/spt/utils/Ilogger";
+import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 
 //Mod setup
@@ -8,6 +8,9 @@ import { OnLoadModService } from "@spt/services/mod/onLoad/OnLoadModService";
 import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
+
+import { DBPLocation, DBPLocations, LeavesUtils, RTT_Colors, UnityVector3 } from "./deps/LeavesUtils";
+import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 
 
 class LEWDS implements IPostDBLoadMod, IPreSptLoadMod
@@ -17,7 +20,8 @@ class LEWDS implements IPostDBLoadMod, IPreSptLoadMod
 	private db: DatabaseServer;
 
 	//Config
-	private config = require( "../config/config.json" );
+	private config: any;
+	private leavesUtils: LeavesUtils;
 
 	public postDBLoad ( container: DependencyContainer ): void
 	{
@@ -30,6 +34,10 @@ class LEWDS implements IPostDBLoadMod, IPreSptLoadMod
 		// get output directory for generated files
 		// "Leaves-LootFuckery" is the directory name of the mod
 		const preSptModLoader = container.resolve<PreSptModLoader>( "PreSptModLoader" );
+
+		this.leavesUtils = new LeavesUtils( container );
+		this.leavesUtils.setModFolder( `${ preSptModLoader.getModPath( "leaves-lewds" ) }/` );
+		this.config = this.leavesUtils.loadFile( "config/config.jsonc" );
 	}
 
 	public preSptLoad ( container: DependencyContainer ): void
@@ -57,14 +65,17 @@ class LEWDS implements IPostDBLoadMod, IPreSptLoadMod
 			return;
 		}
 
+		let DBPLocs: DBPLocations = new DBPLocations();
+		DBPLocs.locations = new Map<string, DBPLocation[]>();
+
 		const locations = this.getLocationNames();
 		for ( let location of locations )
 		{
 			let totalAdjusted = 0;
-			
+			DBPLocs.locations[ location ] = [];
 			for ( let point of this.db.getTables().locations[ location ].looseLoot.spawnpoints )
 			{
-				if( this.adjustPoint( point ) )
+				if( this.adjustPoint( point, DBPLocs.locations[location] ) )
 				{
 					totalAdjusted++;
 				}
@@ -72,53 +83,67 @@ class LEWDS implements IPostDBLoadMod, IPreSptLoadMod
 			this.logger.info( "[L.E.W.D.S.] Found " + totalAdjusted + " spawns below floor at " + location + "." );
 		}
 
+		this.leavesUtils.saveFile( DBPLocs, "points.json", true );
 	}
 
-	private adjustPoint ( point: any ): boolean
+	private adjustPoint ( point: any, points:DBPLocation[] ): boolean
 	{
 		const itemTable = this.db.getTables().templates.items;
 		const items = point.template.Items;
-		const probabilityFloor = this.config.probabilityFloor;
-		let isWeapon = false;
-		let adjust = false;
-
-		for ( const item in point.template.Items )
+		let adjusted = false;
+		let probability = 0;
+		let foundItems: string[] = [];
+		
+		for ( const item of items )
 		{
 			//If an entry has a parent, it's not the top node in the entry. So we skip it.
-			if ( items[ item ].parentId )
+			if ( item.parentId )
 			{
 				continue;
 			}
 
-			const parent = itemTable[ items[ item ]._tpl ]._parent;
-
-			if ( itemTable[ parent ]._parent )
+			if ( this.config.categories[ itemTable[ item._tpl ]._parent ] || this.config.items[item._tpl] )
 			{
-				if ( itemTable[ parent ]._parent == "5422acb9af1c889c16000029" )//Weapon
+				adjusted = true;
+				const newProb = this.config.categories[ itemTable[ item._tpl ]._parent ] ? this.config.categories[ itemTable[ item._tpl ]._parent ] : this.config.items[item._tpl];
+				if ( newProb > probability )
 				{
-					isWeapon = true;
-					break;
+					probability = newProb;
+				}
+				if ( this.config.GenerateLocationJsonForDBP )
+				{
+					foundItems.push( item._tpl );
 				}
 			}
 		}
-
-		if ( this.config.onlyWeapons && isWeapon )
+		if ( adjusted )
 		{
-			adjust = true;
-		}
-
-		if( this.config.onlyWeapons == false )
-		{
-			adjust = true;
-		}
-
-		if ( adjust && point.probability < probabilityFloor )
-		{
-			point.probability = probabilityFloor;
+			if ( probability > point.probability )
+			{
+				point.probability = probability;
+			}
+			var newPoint = this.populateDBPLocation( foundItems, point.template.Position );
+			newPoint.coordinates.y += 0.07;
+			points.push( newPoint );
 			return true;
 		}
-
 		return false;
+	}
+
+	private populateDBPLocation( items: string[], position:UnityVector3 ): DBPLocation
+	{
+		const itemTable = this.db.getTables().templates.items;
+		let loc = this.leavesUtils.getBaseDBPLocation();
+		let text = "";
+
+		for ( let item of items )
+		{
+			text += this.leavesUtils.getLocale( "en", item, " Name" ) + "\n";
+		}
+		loc.coordinates = position;
+		loc.text = text;
+
+		return loc;
 	}
 
 	private getLocationNames (): string[]

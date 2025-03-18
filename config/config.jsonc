@@ -1,0 +1,46 @@
+{
+    
+    "categories":
+    {
+        "543be6564bdc2df4348b4568": 0.05, //Throwable
+        "5447e1d04bdc2dff2f8b4567": 0.05, //Melee Weapons
+        "5447bed64bdc2d97278b4568": 0.05, //Machine Guns
+        "5447b6254bdc2dc3278b4568": 0.05, //SnipersRifles
+        "5447b5e04bdc2d62278b4567": 0.05, //Smgs
+        "5447b6094bdc2dc3278b4567": 0.05, //Shotguns
+        "5447b5cf4bdc2d65278b4567": 0.05, //Pistol
+        "617f1ef5e8b54b0998387733": 0.05, //Revolver
+        "5447b6194bdc2d67278b4567": 0.05, //MarksmanRifles
+        "5447b5f14bdc2d61278b4567": 0.05, //AssaultRifles
+        "5447b5fc4bdc2d87278b4567": 0.05, //AssaultCarbines
+        "5447bedf4bdc2d87278b4568": 0.05 //GrenadeLauncher
+        /*
+        "5c164d2286f774194c5e69fa": 0.025, //Keycard
+        "5c99f98d86f7745c314214b3": 0.024, //KeyMechanical
+        "616eb7aea207f41933308f46": 0.025 //RepairKits*/
+    },
+    "items":
+    {
+        /*
+        "5c0530ee86f774697952d952": 0.025, //LEDX
+        "5c052f6886f7746b1e3db148": 0.025, //Military COFDM Wireless Signal Transmitter
+        "5c052fb986f7746b2101e909": 0.025, //UHF RFID Reader
+        "5c05300686f7746dce784e5d": 0.025, //VPX Flash Storage Module
+        "5c05308086f7746b2101e90b": 0.025, //Virtex programmable processor
+        "5d0376a486f7747d8050965c": 0.025, //Military circuit board
+        "5d03775b86f774203e7e0c4b": 0.025, //Phased array element
+        "5d0377ce86f774186372f689": 0.025, //Iridium military thermal vision module
+        "5d03784a86f774203e7e0c4d": 0.025, //Military gyrotachometer
+        "57347ca924597744596b4e71": 0.025, //Graphics card
+        "5c12620d86f7743f8b198b72": 0.025, //Tetriz portable game console
+        "6389c7f115805221fb410466": 0.025, //Far-forward GPS Signal Amplifier Unit
+        "6389c85357baa773a825b356": 0.025, //Advanced current converter
+        "5c12613b86f7743bbe2c3f76": 0.025, //Intelligence folder
+        "6389c8c5dbfd5e4b95197e6b": 0.025, //TerraGroup "Blue Folders" materials
+        "6389c8fb46b54c634724d847": 0.025, //Silicon Optoelectronic Integrated Circuits textbook
+        "6389c92d52123d5dd17f8876": 0.025, //Advanced Electronic Materials textbook
+        "59faff1d86f7746c51718c9c": 0.025 //Physical Bitcoin
+        */
+    },
+    "GenerateLocationJsonForDBP": false
+}
