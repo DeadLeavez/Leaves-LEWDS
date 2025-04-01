@@ -26,3 +26,7 @@ Rework
 - Add the option to also target specific items.
 - Added the feature to dump to point file to use with CJ's DebugPlus. To let you visually explore loot spawn points on maps.
 - Updated compat to 3.11 (this release still works on 3.10)
+
+## 1.1.1
+- Ignore broken items. (Probably from other mods.)
+- Expand upon point dump file.
